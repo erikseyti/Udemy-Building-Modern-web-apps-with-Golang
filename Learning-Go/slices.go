@@ -6,6 +6,8 @@ import (
 )
 
 func main() {
+	// Maneira de manejar uma serie de dados em GO, 
+	// Similar a listas em Python e Javascript
 	var mySlice []string
 
 	mySlice = append(mySlice, "Trevor")
