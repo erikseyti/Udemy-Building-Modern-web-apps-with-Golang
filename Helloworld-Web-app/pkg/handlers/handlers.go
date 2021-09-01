@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/erikseyti/udemy-go-course/pkg/config"
+	"github.com/erikseyti/udemy-go-course/pkg/models"
 	"github.com/erikseyti/udemy-go-course/pkg/render"
 )
 
@@ -23,16 +24,24 @@ func NewRepo(a *config.AppConfig) *Repository {
 }
 
 // NewHandlers sets the repository for the handlers
-func NewHandlers(r *Repository ){
+func NewHandlers(r *Repository) {
 	Repo = r
 }
 
 // Home is the handler for the home page
 func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
-	render.RenderTemplate(w, "home.page.tmpl")
+	render.RenderTemplate(w, "home.page.tmpl", &models.TemplateData{})
 }
 
 // About is the handler for the about page
 func (m *Repository) About(w http.ResponseWriter, r *http.Request) {
-	render.RenderTemplate(w, "about.page.tmpl")
+	// perform some logic
+
+	stringMap := make(map[string]string)
+	stringMap["test"] = "Hello, again"
+
+	// send the data to the template
+	render.RenderTemplate(w, "about.page.tmpl", &models.TemplateData{
+		StringMap: stringMap,
+	})
 }

@@ -9,9 +9,8 @@ import (
 	"path/filepath"
 
 	"github.com/erikseyti/udemy-go-course/pkg/config"
+	"github.com/erikseyti/udemy-go-course/pkg/models"
 )
-
-
 
 var functions = template.FuncMap{}
 
@@ -22,11 +21,16 @@ func NewTemplates(a *config.AppConfig) {
 	app = a
 }
 
+func AddDefaultData(td *models.TemplateData) *models.TemplateData {
+
+	return td
+}
+
 // RenderTemplate renders templates using html/template
-func RenderTemplate(w http.ResponseWriter, tmpl string) {
+func RenderTemplate(w http.ResponseWriter, tmpl string, td *models.TemplateData) {
 	var tc map[string]*template.Template
 
-	if app.UseCache{
+	if app.UseCache {
 		// get the template cache from the app config
 		tc = app.TemplateCache
 	} else {
@@ -41,23 +45,25 @@ func RenderTemplate(w http.ResponseWriter, tmpl string) {
 
 	buf := new(bytes.Buffer)
 
-	_ = t.Execute(buf, nil)
+	td = AddDefaultData(td)
 
-	_ , err := buf.WriteTo(w)
+	_ = t.Execute(buf, td)
 
-	if err !=nil {
+	_, err := buf.WriteTo(w)
+
+	if err != nil {
 		fmt.Println("Error writing template to browser", err)
 	}
 
 }
 
 // CreateTemplateCache creates a template cache as a map
-func CreateTemplateCache () (map[string]*template.Template ,error){
+func CreateTemplateCache() (map[string]*template.Template, error) {
 	myCache := map[string]*template.Template{}
 
 	pages, err := filepath.Glob("./templates/*.page.tmpl")
 	if err != nil {
-		return myCache ,err
+		return myCache, err
 	}
 
 	for _, page := range pages {
@@ -66,7 +72,7 @@ func CreateTemplateCache () (map[string]*template.Template ,error){
 		ts, err := template.New(name).Funcs(functions).ParseFiles(page)
 
 		if err != nil {
-			return myCache ,err
+			return myCache, err
 		}
 
 		matches, err := filepath.Glob("./templates/*.layout.tmpl")
@@ -81,7 +87,6 @@ func CreateTemplateCache () (map[string]*template.Template ,error){
 			if err != nil {
 				return myCache, err
 			}
-
 
 		}
 		myCache[name] = ts
