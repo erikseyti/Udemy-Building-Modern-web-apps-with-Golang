@@ -190,7 +190,7 @@
     <script src="https://unpkg.com/notie"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.5/dist/sweetalert2.min.js"></script>
     <script>
-      console.log("I am printing from javascript");
+      let attention = Prompt();
 
       (function () {
         "use strict";
@@ -224,12 +224,13 @@
           let myEl = document.getElementById("myParagraph");
 
           // notify("This is a message", "warning");
-          notifyModal(
-            "title",
-            "<em>Hello World</em>",
-            "success",
-            "notification text success"
-          );
+          // notifyModal(
+          //   "title",
+          //   "<em>Hello World</em>",
+          //   "success",
+          //   "notification text success"
+          // );
+          attention.success();
         });
 
       const elem = document.getElementById("reservation-dates");
@@ -252,6 +253,22 @@
           confirmButtonText: confirmationButtonText,
         });
       }
+
+      function Prompt() {
+        let toast = () => {
+          console.log("clicked button and got toast!");
+        }
+
+        let success = () => {
+          console.log("clicked button and got success!");
+        }
+
+        return {
+          toast: toast,
+          success: success
+        }
+      }
+
     </script>
   </body>
 </html>
