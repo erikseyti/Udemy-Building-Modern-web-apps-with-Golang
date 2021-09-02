@@ -25,6 +25,11 @@
       type="text/css"
       href="https://unpkg.com/notie/dist/notie.min.css"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.5/dist/sweetalert2.min.css"
+    />
+
     <style>
       .my-footer {
         height: 5em;
@@ -183,6 +188,7 @@
     ></script>
     <script src="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.1.2/dist/js/datepicker-full.min.js"></script>
     <script src="https://unpkg.com/notie"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.5/dist/sweetalert2.min.js"></script>
     <script>
       console.log("I am printing from javascript");
 
@@ -217,7 +223,13 @@
         .addEventListener("click", function () {
           let myEl = document.getElementById("myParagraph");
 
-          notify("This is a message", "warning");
+          // notify("This is a message", "warning");
+          notifyModal(
+            "title",
+            "<em>Hello World</em>",
+            "success",
+            "notification text success"
+          );
         });
 
       const elem = document.getElementById("reservation-dates");
@@ -229,6 +241,15 @@
         notie.alert({
           type: messageType,
           text: message,
+        });
+      }
+
+      function notifyModal(title, htmlText, icon, confirmationButtonText) {
+        Swal.fire({
+          title: title,
+          html: htmlText,
+          icon: icon,
+          confirmButtonText: confirmationButtonText,
         });
       }
     </script>
