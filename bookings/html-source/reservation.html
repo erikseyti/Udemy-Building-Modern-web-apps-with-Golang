@@ -222,15 +222,9 @@
         .getElementById("colorButton")
         .addEventListener("click", function () {
           let myEl = document.getElementById("myParagraph");
-
-          // notify("This is a message", "warning");
-          // notifyModal(
-          //   "title",
-          //   "<em>Hello World</em>",
-          //   "success",
-          //   "notification text success"
-          // );
-          attention.success();
+          // attention.toast({ msg: "Hello World", icon: "error" });
+          // attention.success({msg: "Hello World"});
+          attention.error({msg: "Ooops!"})
         });
 
       const elem = document.getElementById("reservation-dates");
@@ -255,20 +249,54 @@
       }
 
       function Prompt() {
-        let toast = () => {
-          console.log("clicked button and got toast!");
-        }
+        let toast = (c) => {
+          const { msg = "", icon = "success", position = "top-end" } = c;
 
-        let success = () => {
-          console.log("clicked button and got success!");
-        }
+          const Toast = Swal.mixin({
+            toast: true,
+            title: msg,
+            position: position,
+            icon: icon,
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener("mouseenter", Swal.stopTimer);
+              toast.addEventListener("mouseleave", Swal.resumeTimer);
+            },
+          });
+
+          Toast.fire({});
+        };
+
+        let success = (c) => {
+          const { msg = "", title = "", footer = "" } = c;
+
+          Swal.fire({
+            icon: "success",
+            title: title,
+            text: msg,
+            footer: footer,
+          });
+        };
+
+        let error = (c) => {
+          const { msg = "", title = "", footer = "" } = c;
+
+          Swal.fire({
+            icon: "error",
+            title: title,
+            text: msg,
+            footer: footer,
+          });
+        };
 
         return {
           toast: toast,
-          success: success
-        }
+          success: success,
+          error: error,
+        };
       }
-
     </script>
   </body>
 </html>
