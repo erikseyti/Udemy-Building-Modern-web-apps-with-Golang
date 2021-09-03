@@ -17,39 +17,35 @@
       <h1 class="text-center mt-4">General's Quarters</h1>
       <p>
         Your home away form home, set on the majestic waters of the Atlantic
-        Ocean, this will be a vacation to remember. Your home away form
-        home, set on the majestic waters of the Atlantic Ocean, this will be
-        a vacation to remember. Your home away form home, set on the
-        majestic waters of the Atlantic Ocean, this will be a vacation to
-        remember. Your home away form home, set on the majestic waters of
-        the Atlantic Ocean, this will be a vacation to remember. Your home
-        away form home, set on the majestic waters of the Atlantic Ocean,
-        this will be a vacation to remember. Your home away form home, set
-        on the majestic waters of the Atlantic Ocean, this will be a
-        vacation to remember.
+        Ocean, this will be a vacation to remember. Your home away form home,
+        set on the majestic waters of the Atlantic Ocean, this will be a
+        vacation to remember. Your home away form home, set on the majestic
+        waters of the Atlantic Ocean, this will be a vacation to remember. Your
+        home away form home, set on the majestic waters of the Atlantic Ocean,
+        this will be a vacation to remember. Your home away form home, set on
+        the majestic waters of the Atlantic Ocean, this will be a vacation to
+        remember. Your home away form home, set on the majestic waters of the
+        Atlantic Ocean, this will be a vacation to remember.
       </p>
     </div>
   </div>
 
   <div class="row">
     <div class="col text-center">
-      <a
-        id="check-availability-button"
-        href="#!"
-        class="btn btn-success"
+      <a id="check-availability-button" href="#!" class="btn btn-success"
         >Check Availability</a
       >
     </div>
   </div>
 </div>
-{{end}}
+{{ end }}
 
 {{ define "js" }}
-  <script>
-    document
-          .getElementById("check-availability-button")
-          .addEventListener("click", function () {
-            let html = `<form id="check-availability-form action="" method=post"
+<script>
+  document
+    .getElementById("check-availability-button")
+    .addEventListener("click", function () {
+      let html = `<form id="check-availability-form action="" method=post"
                   novalidate class="needs-validation">
                   <div class="form-row">
                       <div class="col">
@@ -64,7 +60,21 @@
                       </div>
                     </div>
                   </form>`;
-            attention.custom({ msg: html, title: "Choose your dates" });
-          });
-  </script>
-{{end}}
+      attention.custom({
+        msg: html,
+        title: "Choose your dates",
+        callback: function (result) {
+          console.log("called");
+
+          fetch("/search-availability-json")
+            .then((response) => response.json())
+            .then((data) => {
+              console.log(data);
+              console.log(data.ok);
+              console.log(data.message);
+            });
+        },
+      });
+    });
+</script>
+{{ end }}
