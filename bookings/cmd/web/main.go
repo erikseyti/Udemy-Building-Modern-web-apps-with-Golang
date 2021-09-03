@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/erikseyti/bookings/pkg/config"
-	"github.com/erikseyti/bookings/pkg/handlers"
-	"github.com/erikseyti/bookings/pkg/render"
+	"github.com/erikseyti/bookings/internal/config"
+	"github.com/erikseyti/bookings/internal/handlers"
+	"github.com/erikseyti/bookings/internal/render"
 	"fmt"
 	"github.com/alexedwards/scs/v2"
 	"log"
