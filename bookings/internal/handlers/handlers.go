@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/erikseyti/bookings/internal/config"
+	"github.com/erikseyti/bookings/internal/forms"
 	"github.com/erikseyti/bookings/internal/models"
 	"github.com/erikseyti/bookings/internal/render"
 )
@@ -55,7 +56,14 @@ func (m *Repository) About(w http.ResponseWriter, r *http.Request) {
 }
 
 func (m *Repository) Reservation(w http.ResponseWriter, r *http.Request) {
-	render.RenderTemplate(w, r, "make-reservation.page.tmpl", &models.TemplateData{})
+	render.RenderTemplate(w, r, "make-reservation.page.tmpl", &models.TemplateData{
+		Form: forms.New(nil),
+	})
+}
+
+// PosReservation handles the posting of a reservation form
+func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
+
 }
 
 func (m *Repository) Generals(w http.ResponseWriter, r *http.Request) {
