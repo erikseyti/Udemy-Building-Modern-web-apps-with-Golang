@@ -3,8 +3,8 @@ package main
 import (
 	"net/http"
 
-	"github.com/erikseyti/bookings/internal/config"
-	"github.com/erikseyti/bookings/internal/handlers"
+	"github.com/erikseyti/booking/internal/config"
+	"github.com/erikseyti/booking/internal/handlers"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 )
@@ -14,7 +14,6 @@ func routes(app *config.AppConfig) http.Handler {
 
 	mux.Use(middleware.Recoverer)
 	mux.Use(NoSurf)
-	// mux.Use(WriteToConsole)
 	mux.Use(SessionLoad)
 
 	mux.Get("/", handlers.Repo.Home)
@@ -25,13 +24,12 @@ func routes(app *config.AppConfig) http.Handler {
 	mux.Get("/search-availability", handlers.Repo.Availability)
 	mux.Post("/search-availability", handlers.Repo.PostAvailability)
 	mux.Post("/search-availability-json", handlers.Repo.AvailabilityJSON)
-	
 
 	mux.Get("/contact", handlers.Repo.Contact)
+
 	mux.Get("/make-reservation", handlers.Repo.Reservation)
 	mux.Post("/make-reservation", handlers.Repo.PostReservation)
 	mux.Get("/reservation-summary", handlers.Repo.ReservationSummary)
-	
 
 	fileServer := http.FileServer(http.Dir("./static/"))
 	mux.Handle("/static/*", http.StripPrefix("/static", fileServer))

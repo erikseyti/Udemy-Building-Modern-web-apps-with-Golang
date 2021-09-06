@@ -8,8 +8,8 @@ import (
 	"time"
 
 	"github.com/alexedwards/scs/v2"
-	"github.com/erikseyti/bookings/internal/config"
-	"github.com/erikseyti/bookings/internal/models"
+	"github.com/erikseyti/booking/internal/config"
+	"github.com/erikseyti/booking/internal/models"
 )
 
 var session *scs.SessionManager
@@ -17,7 +17,6 @@ var testApp config.AppConfig
 
 func TestMain(m *testing.M) {
 
-	// What am I goind to put in the session
 	gob.Register(models.Reservation{})
 
 	// change this to true when in production
@@ -37,20 +36,16 @@ func TestMain(m *testing.M) {
 	os.Exit(m.Run())
 }
 
-type myWriter struct{
-
-}
+type myWriter struct{}
 
 func (tw *myWriter) Header() http.Header {
 	var h http.Header
 	return h
 }
 
-func (tw *myWriter) WriteHeader(i int) {
+func (tw *myWriter) WriteHeader(i int) {}
 
+func (tw *myWriter) Write(b []byte) (int, error) {
+	length := len(b)
+	return length, nil
 }
-
-func (tw *myWriter) Write( b []byte) (int, error){
-	lenth :=len(b)
-	return lenth, nil
-} 

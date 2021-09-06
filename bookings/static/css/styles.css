@@ -1,26 +1,20 @@
 .my-footer {
-  height: 5em;
-  background-color: #163b65;
-  margin-top: 1.5em;
-  padding: 1em;
-  color: white;
-  font-size: 80%;
-}
-
-/* override styles here */
-.notie-container {
-  box-shadow: none;
-  font-weight: 600;
-}
-#reservation-form {
-  display: flex;
-  flex-direction: column;
-}
-
-.datepicker {
-  z-index: 10000;
+    height: 5em;
+    background-color: #163b65;
+    margin-top: 1.5em;
+    padding: 1em;
+    color: white;
+    font-size: 80%;
 }
 
 .room-image {
-  max-width: 50%;
+    max-width: 50%;
+}
+
+.notie-container {
+    box-shadow: none;
+}
+
+.datepicker {
+    z-index: 10000;
 }

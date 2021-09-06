@@ -2,19 +2,18 @@ package forms
 
 import (
 	"fmt"
+	"github.com/asaskevich/govalidator"
 	"net/url"
 	"strings"
-
-	"github.com/asaskevich/govalidator"
 )
 
-// Form creates a custom form struct, embeds a url.Values object
+// Form creates a custom form struct and embeds a url.Values object
 type Form struct {
 	url.Values
 	Errors errors
 }
 
-// Valid returns true if there are no errors, otherwise returns false
+// Valid returns true if there are no errors, otherwise false
 func (f *Form) Valid() bool {
 	return len(f.Errors) == 0
 }
@@ -27,6 +26,7 @@ func New(data url.Values) *Form {
 	}
 }
 
+// Required checks for required fields
 func (f *Form) Required(fields ...string) {
 	for _, field := range fields {
 		value := f.Get(field)
@@ -36,17 +36,16 @@ func (f *Form) Required(fields ...string) {
 	}
 }
 
-// Has check if form field is in post and not empty
+// Has checks if form field is in post and not empty
 func (f *Form) Has(field string) bool {
 	x := f.Get(field)
-
 	if x == "" {
 		return false
 	}
 	return true
 }
 
-// MinLegth checks for string minimum length
+// MinLength check for minimum length
 func (f *Form) MinLength(field string, length int) bool {
 	x := f.Get(field)
 	if len(x) < length {
@@ -56,7 +55,7 @@ func (f *Form) MinLength(field string, length int) bool {
 	return true
 }
 
-// IsEmail checks for valid email address
+// IsEmail checks for a valid email address
 func (f *Form) IsEmail(field string) {
 	if !govalidator.IsEmail(f.Get(field)) {
 		f.Errors.Add(field, "Invalid email address")

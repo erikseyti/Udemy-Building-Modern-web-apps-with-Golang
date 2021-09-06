@@ -2,9 +2,9 @@ package main
 
 import "testing"
 
-func TestRun( t *testing.T ) {
+func TestRun(t *testing.T) {
 	err := run()
 	if err != nil {
-		t.Error("failed run()")
+		t.Error("failed run")
 	}
 }

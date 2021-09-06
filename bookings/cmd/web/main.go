@@ -8,10 +8,10 @@ import (
 	"time"
 
 	"github.com/alexedwards/scs/v2"
-	"github.com/erikseyti/bookings/internal/config"
-	"github.com/erikseyti/bookings/internal/handlers"
-	"github.com/erikseyti/bookings/internal/models"
-	"github.com/erikseyti/bookings/internal/render"
+	"github.com/erikseyti/booking/internal/config"
+	"github.com/erikseyti/booking/internal/handlers"
+	"github.com/erikseyti/booking/internal/models"
+	"github.com/erikseyti/booking/internal/render"
 )
 
 const portNumber = ":8080"
@@ -22,7 +22,6 @@ var session *scs.SessionManager
 // main is the main function
 func main() {
 	err := run()
-
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -41,7 +40,7 @@ func main() {
 }
 
 func run() error {
-	// What am I goind to put in the session
+	// what am I going to put in the session
 	gob.Register(models.Reservation{})
 
 	// change this to true when in production
@@ -69,6 +68,5 @@ func run() error {
 	handlers.NewHandlers(repo)
 
 	render.NewTemplates(&app)
-
 	return nil
 }
