@@ -18,17 +18,18 @@ var dbConn = &DB{}
 
 const maxOpenDbConn = 10
 const maxIdleDbConn = 5
-const maxDBLifeTime = 5 * time.Minute
+const maxDbLifetime = 5 * time.Minute
 
 // ConnectSQL creates database pool for Postgres
 func ConnectSQL(dsn string) (*DB, error) {
-	d, err := NewDataBae(dsn)
+	d, err := NewDatabase(dsn)
 	if err != nil {
 		panic(err)
 	}
+
 	d.SetMaxOpenConns(maxOpenDbConn)
-	d.SetConnMaxIdleTime(maxIdleDbConn)
-	d.SetConnMaxLifetime(maxDBLifeTime)
+	d.SetMaxIdleConns(maxIdleDbConn)
+	d.SetConnMaxLifetime(maxDbLifetime)
 
 	dbConn.SQL = d
 
@@ -50,7 +51,7 @@ func testDB(d *sql.DB) error {
 }
 
 // NewDatabase creates a new database for the application
-func NewDataBae(dsn string) (*sql.DB, error) {
+func NewDatabase(dsn string) (*sql.DB, error) {
 	db, err := sql.Open("pgx", dsn)
 	if err != nil {
 		return nil, err
@@ -61,5 +62,4 @@ func NewDataBae(dsn string) (*sql.DB, error) {
 	}
 
 	return db, nil
-
 }

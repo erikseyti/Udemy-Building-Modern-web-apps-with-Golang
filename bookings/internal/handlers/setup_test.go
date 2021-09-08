@@ -12,6 +12,7 @@ import (
 
 	"github.com/alexedwards/scs/v2"
 	"github.com/erikseyti/booking/internal/config"
+	"github.com/erikseyti/booking/internal/driver"
 	"github.com/erikseyti/booking/internal/models"
 	"github.com/erikseyti/booking/internal/render"
 	"github.com/go-chi/chi"
@@ -54,10 +55,12 @@ func getRoutes() http.Handler {
 	app.TemplateCache = tc
 	app.UseCache = true
 
-	repo := NewRepo(&app)
+	// its not right, just to make the lint don't acuse an error
+	// fix later
+	repo := NewRepo(&app, &driver.DB{})
 	NewHandlers(repo)
 
-	render.NewTemplates(&app)
+	render.NewRenderer(&app)
 
 	mux := chi.NewRouter()
 
