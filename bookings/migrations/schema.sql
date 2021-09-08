@@ -63,10 +63,10 @@ ALTER SEQUENCE public.reservations_id_seq OWNED BY public.reservations.id;
 
 
 --
--- Name: restricitions; Type: TABLE; Schema: public; Owner: postgres
+-- Name: restrictions; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.restricitions (
+CREATE TABLE public.restrictions (
     id integer NOT NULL,
     restriction_name character varying(255) DEFAULT ''::character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
@@ -74,7 +74,7 @@ CREATE TABLE public.restricitions (
 );
 
 
-ALTER TABLE public.restricitions OWNER TO postgres;
+ALTER TABLE public.restrictions OWNER TO postgres;
 
 --
 -- Name: restricitions_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -95,7 +95,7 @@ ALTER TABLE public.restricitions_id_seq OWNER TO postgres;
 -- Name: restricitions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
-ALTER SEQUENCE public.restricitions_id_seq OWNED BY public.restricitions.id;
+ALTER SEQUENCE public.restricitions_id_seq OWNED BY public.restrictions.id;
 
 
 --
@@ -233,10 +233,10 @@ ALTER TABLE ONLY public.reservations ALTER COLUMN id SET DEFAULT nextval('public
 
 
 --
--- Name: restricitions id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: restrictions id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.restricitions ALTER COLUMN id SET DEFAULT nextval('public.restricitions_id_seq'::regclass);
+ALTER TABLE ONLY public.restrictions ALTER COLUMN id SET DEFAULT nextval('public.restricitions_id_seq'::regclass);
 
 
 --
@@ -269,10 +269,10 @@ ALTER TABLE ONLY public.reservations
 
 
 --
--- Name: restricitions restricitions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: restrictions restricitions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.restricitions
+ALTER TABLE ONLY public.restrictions
     ADD CONSTRAINT restricitions_pkey PRIMARY KEY (id);
 
 
@@ -313,6 +313,22 @@ CREATE UNIQUE INDEX schema_migration_version_idx ON public.schema_migration USIN
 
 ALTER TABLE ONLY public.reservations
     ADD CONSTRAINT reservations_rooms_id_fk FOREIGN KEY (room_id) REFERENCES public.rooms(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: room_restrictions room_restrictions_restrictions_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.room_restrictions
+    ADD CONSTRAINT room_restrictions_restrictions_id_fk FOREIGN KEY (restriction_id) REFERENCES public.restrictions(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: room_restrictions room_restrictions_rooms_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.room_restrictions
+    ADD CONSTRAINT room_restrictions_rooms_id_fk FOREIGN KEY (room_id) REFERENCES public.rooms(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
