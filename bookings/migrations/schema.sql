@@ -77,10 +77,10 @@ CREATE TABLE public.restrictions (
 ALTER TABLE public.restrictions OWNER TO postgres;
 
 --
--- Name: restricitions_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: restrictions_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
-CREATE SEQUENCE public.restricitions_id_seq
+CREATE SEQUENCE public.restrictions_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -89,13 +89,13 @@ CREATE SEQUENCE public.restricitions_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.restricitions_id_seq OWNER TO postgres;
+ALTER TABLE public.restrictions_id_seq OWNER TO postgres;
 
 --
--- Name: restricitions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: restrictions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
-ALTER SEQUENCE public.restricitions_id_seq OWNED BY public.restrictions.id;
+ALTER SEQUENCE public.restrictions_id_seq OWNED BY public.restrictions.id;
 
 
 --
@@ -236,7 +236,7 @@ ALTER TABLE ONLY public.reservations ALTER COLUMN id SET DEFAULT nextval('public
 -- Name: restrictions id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.restrictions ALTER COLUMN id SET DEFAULT nextval('public.restricitions_id_seq'::regclass);
+ALTER TABLE ONLY public.restrictions ALTER COLUMN id SET DEFAULT nextval('public.restrictions_id_seq'::regclass);
 
 
 --
@@ -269,11 +269,11 @@ ALTER TABLE ONLY public.reservations
 
 
 --
--- Name: restrictions restricitions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: restrictions restrictions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.restrictions
-    ADD CONSTRAINT restricitions_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT restrictions_pkey PRIMARY KEY (id);
 
 
 --
@@ -301,10 +301,52 @@ ALTER TABLE ONLY public.users
 
 
 --
+-- Name: reservations_email_idx; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX reservations_email_idx ON public.reservations USING btree (email);
+
+
+--
+-- Name: reservations_last_name_idx; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX reservations_last_name_idx ON public.reservations USING btree (last_name);
+
+
+--
+-- Name: room_restrictions_reservation_id_idx; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX room_restrictions_reservation_id_idx ON public.room_restrictions USING btree (reservation_id);
+
+
+--
+-- Name: room_restrictions_room_id_idx; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX room_restrictions_room_id_idx ON public.room_restrictions USING btree (room_id);
+
+
+--
+-- Name: room_restrictions_start_date_end_date_idx; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX room_restrictions_start_date_end_date_idx ON public.room_restrictions USING btree (start_date, end_date);
+
+
+--
 -- Name: schema_migration_version_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE UNIQUE INDEX schema_migration_version_idx ON public.schema_migration USING btree (version);
+
+
+--
+-- Name: users_email_idx; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE UNIQUE INDEX users_email_idx ON public.users USING btree (email);
 
 
 --
@@ -313,6 +355,14 @@ CREATE UNIQUE INDEX schema_migration_version_idx ON public.schema_migration USIN
 
 ALTER TABLE ONLY public.reservations
     ADD CONSTRAINT reservations_rooms_id_fk FOREIGN KEY (room_id) REFERENCES public.rooms(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: room_restrictions room_restrictions_reservations_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.room_restrictions
+    ADD CONSTRAINT room_restrictions_reservations_id_fk FOREIGN KEY (reservation_id) REFERENCES public.reservations(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
