@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/erikseyti/booking/internal/models"
+	"github.com/erikseyti/bookings/internal/models"
 )
 
 func TestAddDefaultData(t *testing.T) {
@@ -24,7 +24,7 @@ func TestAddDefaultData(t *testing.T) {
 
 }
 
-func TestTemplate(t *testing.T) {
+func TestRenderTemplate(t *testing.T) {
 	pathToTemplates = "./../../templates"
 	tc, err := CreateTemplateCache()
 	if err != nil {

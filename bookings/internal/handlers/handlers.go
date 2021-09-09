@@ -7,14 +7,14 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/erikseyti/booking/internal/config"
-	"github.com/erikseyti/booking/internal/driver"
-	"github.com/erikseyti/booking/internal/forms"
-	"github.com/erikseyti/booking/internal/helpers"
-	"github.com/erikseyti/booking/internal/models"
-	"github.com/erikseyti/booking/internal/render"
-	"github.com/erikseyti/booking/internal/repository"
-	"github.com/erikseyti/booking/internal/repository/dbrepo"
+	"github.com/erikseyti/bookings/internal/config"
+	"github.com/erikseyti/bookings/internal/driver"
+	"github.com/erikseyti/bookings/internal/forms"
+	"github.com/erikseyti/bookings/internal/helpers"
+	"github.com/erikseyti/bookings/internal/models"
+	"github.com/erikseyti/bookings/internal/render"
+	"github.com/erikseyti/bookings/internal/repository"
+	"github.com/erikseyti/bookings/internal/repository/dbrepo"
 )
 
 // Repo the repository used by the handlers
@@ -46,8 +46,6 @@ func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
 
 // About is the handler for the about page
 func (m *Repository) About(w http.ResponseWriter, r *http.Request) {
-
-	// send data to the template
 	render.Template(w, r, "about.page.tmpl", &models.TemplateData{})
 }
 
@@ -66,7 +64,6 @@ func (m *Repository) Reservation(w http.ResponseWriter, r *http.Request) {
 // PostReservation handles the posting of a reservation form
 func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
-
 	if err != nil {
 		helpers.ServerError(w, err)
 		return
@@ -75,20 +72,24 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 	sd := r.Form.Get("start_date")
 	ed := r.Form.Get("end_date")
 
-	// 2020-02-04 -- 01/02 03:04:05PM '06 -0700
+	// 2020-01-01 - 01/02 03:04:05PM '06 -0700
 
 	layout := "2006-01-02"
+
 	startDate, err := time.Parse(layout, sd)
+
 	if err != nil {
 		helpers.ServerError(w, err)
 	}
 
 	endDate, err := time.Parse(layout, ed)
+
 	if err != nil {
 		helpers.ServerError(w, err)
 	}
 
 	roomID, err := strconv.Atoi(r.Form.Get("room_id"))
+
 	if err != nil {
 		helpers.ServerError(w, err)
 	}
@@ -120,6 +121,7 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 	}
 
 	err = m.DB.InsertReservation(reservation)
+
 	if err != nil {
 		helpers.ServerError(w, err)
 	}
@@ -165,7 +167,6 @@ func (m *Repository) AvailabilityJSON(w http.ResponseWriter, r *http.Request) {
 
 	out, err := json.MarshalIndent(resp, "", "     ")
 	if err != nil {
-		// log.Println(err)
 		helpers.ServerError(w, err)
 		return
 	}
@@ -183,7 +184,7 @@ func (m *Repository) Contact(w http.ResponseWriter, r *http.Request) {
 func (m *Repository) ReservationSummary(w http.ResponseWriter, r *http.Request) {
 	reservation, ok := m.App.Session.Get(r.Context(), "reservation").(models.Reservation)
 	if !ok {
-		m.App.ErrorLog.Println("Can't get error from session")
+		m.App.ErrorLog.Println("Can't get reservation from session")
 		m.App.Session.Put(r.Context(), "error", "Can't get reservation from session")
 		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 		return

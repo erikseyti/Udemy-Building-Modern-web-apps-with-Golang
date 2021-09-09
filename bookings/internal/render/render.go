@@ -4,12 +4,13 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"github.com/justinas/nosurf"
-	"github.com/erikseyti/booking/internal/config"
-	"github.com/erikseyti/booking/internal/models"
 	"html/template"
 	"net/http"
-	"path/filepath" 
+	"path/filepath"
+
+	"github.com/erikseyti/bookings/internal/config"
+	"github.com/erikseyti/bookings/internal/models"
+	"github.com/justinas/nosurf"
 )
 
 var functions = template.FuncMap{}

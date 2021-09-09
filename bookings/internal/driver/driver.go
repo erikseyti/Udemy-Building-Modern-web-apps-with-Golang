@@ -45,9 +45,8 @@ func testDB(d *sql.DB) error {
 	err := d.Ping()
 	if err != nil {
 		return err
-	} else {
-		return nil
 	}
+	return nil
 }
 
 // NewDatabase creates a new database for the application

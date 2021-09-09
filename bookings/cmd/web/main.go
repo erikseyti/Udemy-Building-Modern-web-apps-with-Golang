@@ -9,12 +9,12 @@ import (
 	"time"
 
 	"github.com/alexedwards/scs/v2"
-	"github.com/erikseyti/booking/internal/config"
-	"github.com/erikseyti/booking/internal/driver"
-	"github.com/erikseyti/booking/internal/handlers"
-	"github.com/erikseyti/booking/internal/helpers"
-	"github.com/erikseyti/booking/internal/models"
-	"github.com/erikseyti/booking/internal/render"
+	"github.com/erikseyti/bookings/internal/config"
+	"github.com/erikseyti/bookings/internal/driver"
+	"github.com/erikseyti/bookings/internal/handlers"
+	"github.com/erikseyti/bookings/internal/helpers"
+	"github.com/erikseyti/bookings/internal/models"
+	"github.com/erikseyti/bookings/internal/render"
 )
 
 const portNumber = ":8080"
@@ -30,7 +30,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	defer db.SQL.Close()
 
 	fmt.Println(fmt.Sprintf("Staring application on port %s", portNumber))
@@ -51,7 +50,7 @@ func run() (*driver.DB, error) {
 	gob.Register(models.Reservation{})
 	gob.Register(models.User{})
 	gob.Register(models.Room{})
-	gob.Register(models.Restriction{})
+	gob.Register(models.RoomRestriction{})
 
 	// change this to true when in production
 	app.InProduction = false
@@ -73,15 +72,12 @@ func run() (*driver.DB, error) {
 
 	// connect to database
 	log.Println("Connecting to database...")
-	db, err := driver.ConnectSQL("host=localhost port=5432 dbname=bookings user=DBUser password=passwordFromDB")
-
+	db, err := driver.ConnectSQL("host=localhost port=5432 dbname=bookings user=userName password=Password")
 	if err != nil {
-		log.Fatal("Cannot connect to database! Dying... :(")
+		log.Fatal("Cannot connect to database! Dying...")
 	}
 
-	log.Println("Connect to database!")
-
-	defer db.SQL.Close()
+	log.Println("Connected to database!")
 
 	tc, err := render.CreateTemplateCache()
 	if err != nil {
@@ -94,7 +90,6 @@ func run() (*driver.DB, error) {
 
 	repo := handlers.NewRepo(&app, db)
 	handlers.NewHandlers(repo)
-
 	render.NewRenderer(&app)
 	helpers.NewHelpers(&app)
 

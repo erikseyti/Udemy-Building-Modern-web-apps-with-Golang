@@ -11,10 +11,10 @@ import (
 	"time"
 
 	"github.com/alexedwards/scs/v2"
-	"github.com/erikseyti/booking/internal/config"
-	"github.com/erikseyti/booking/internal/driver"
-	"github.com/erikseyti/booking/internal/models"
-	"github.com/erikseyti/booking/internal/render"
+	"github.com/erikseyti/bookings/internal/config"
+	"github.com/erikseyti/bookings/internal/driver"
+	"github.com/erikseyti/bookings/internal/models"
+	"github.com/erikseyti/bookings/internal/render"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/justinas/nosurf"
@@ -55,8 +55,6 @@ func getRoutes() http.Handler {
 	app.TemplateCache = tc
 	app.UseCache = true
 
-	// its not right, just to make the lint don't acuse an error
-	// fix later
 	repo := NewRepo(&app, &driver.DB{})
 	NewHandlers(repo)
 

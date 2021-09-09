@@ -3,18 +3,18 @@ package dbrepo
 import (
 	"database/sql"
 
-	"github.com/erikseyti/booking/internal/config"
-	"github.com/erikseyti/booking/internal/repository"
+	"github.com/erikseyti/bookings/internal/config"
+	"github.com/erikseyti/bookings/internal/repository"
 )
 
 type postgresDBRepo struct {
 	App *config.AppConfig
-	DB *sql.DB
+	DB  *sql.DB
 }
 
 func NewPostgresRepo(conn *sql.DB, a *config.AppConfig) repository.DatabaseRepo {
 	return &postgresDBRepo{
 		App: a,
-		DB: conn,
+		DB:  conn,
 	}
 }
