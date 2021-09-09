@@ -14,6 +14,7 @@ import (
 	"github.com/erikseyti/bookings/internal/render"
 	"github.com/erikseyti/bookings/internal/repository"
 	"github.com/erikseyti/bookings/internal/repository/dbrepo"
+	"github.com/go-chi/chi"
 )
 
 // Repo the repository used by the handlers
@@ -207,7 +208,7 @@ func (m *Repository) PostAvailability(w http.ResponseWriter, r *http.Request) {
 
 	res := models.Reservation{
 		StartDate: startDate,
-		EndDate: endDate,
+		EndDate:   endDate,
 	}
 
 	m.App.Session.Put(r.Context(), "reservation", res)
@@ -263,4 +264,27 @@ func (m *Repository) ReservationSummary(w http.ResponseWriter, r *http.Request) 
 	render.Template(w, r, "reservation-summary.page.tmpl", &models.TemplateData{
 		Data: data,
 	})
+}
+
+func (m *Repository) ChooseRoom(w http.ResponseWriter, r *http.Request) {
+	roomID, err := strconv.Atoi(chi.URLParam(r, "id"))
+
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
+
+	// m.App.Session.Get(r.Context(), "reservation")
+
+	res, ok := m.App.Session.Get(r.Context(), "reservation").(models.Reservation)
+	if !ok {
+		helpers.ServerError(w, err)
+		return
+	}
+
+	res.RoomID = roomID
+
+	m.App.Session.Put(r.Context(), "reservation", res)
+
+	http.Redirect(w, r, "/make-reservation", http.StatusSeeOther)
 }
